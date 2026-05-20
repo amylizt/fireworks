@@ -1,0 +1,12 @@
+{
+  "name": "fireworks-for-fun",
+  "version": "1.0.0",
+  "description": "A simple fireworks app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

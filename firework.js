@@ -35,12 +35,18 @@
     image.src = './assets/wand.png';
 
     const drawWand = () => {
-        positions.wandX = (width * .91) - image.width;
-        positions.wandY = (height * .93) - image.height;
+        const wizardHeight = height * 0.20;
+        const wandHeight = wizardHeight * 0.50;
+        const wandAspectRatio = image.width / image.height;
+        const wandWidth = wandHeight * wandAspectRatio;
+        const wizardWidth = wizardHeight * 1.0;
+        const wizardX = (width * 0.91) - wizardWidth;
+        positions.wandX = wizardX + (wizardWidth * 0.50);
+        positions.wandY = (height * 0.95) - (wizardHeight * 0.35);
 
         const rotationInRadians = Math.atan2(positions.mouseY - positions.wandY, positions.mouseX - positions.wandX) - Math.PI;
         const rotationInDegrees = (rotationInRadians * 180 / Math.PI) + 360;
-        
+                
         context.clearRect(0, 0, width, height);
         
         // Save context to remove transformation afterwards
@@ -53,11 +59,13 @@
             context.rotate(90 * Math.PI / 180);
         }
 
-        context.drawImage(image, -image.width, -image.height / 2);
-
+        context.drawImage(image, -wandWidth, -wandHeight/ 2, wandWidth, wandHeight);
+        //context.drawImage(image, -wandWidth / 2, -wandHeight, wandWidth, wandHeight);
         // Can be used for debugging to see where the edges of the context are
         // context.strokeRect(0, 0, width, height);
         context.restore();
+        positions.tipX = positions.wandX - Math.cos(rotationInRadians) * wandWidth;
+        positions.tipY = positions.wandY - Math.sin(rotationInRadians) * wandWidth;
     };
 
     const attachEventListeners = () => {
@@ -99,16 +107,16 @@
         const init = () => {
             let fireworkLength = 10;
 
-            this.x = positions.wandX;
-            this.y = positions.wandY;
+            this.x = positions.tipX;
+            this.y = positions.tipY;
             this.tx = positions.mouseX;
             this.ty = positions.mouseY;
 
-            this.distanceToTarget = getDistance(positions.wandX, positions.wandY, this.tx, this.ty);
+            this.distanceToTarget = getDistance(positions.tipX, positions.tipY, this.tx, this.ty);
             this.distanceTraveled = 0;
 
             this.coordinates = [];
-            this.angle = Math.atan2(this.ty - positions.wandY, this.tx - positions.wandX);
+            this.angle = Math.atan2(this.ty - positions.tipY, this.tx - positions.tipX);
             this.speed = 20;
             this.friction = .99;
             this.hue = random(0, 360);

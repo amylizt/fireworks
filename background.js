@@ -25,9 +25,14 @@
 
 	const drawWizard = () => {
 		const image = new Image ();
-		image.src = './assets/wizard2.png';
+		image.src = './assets/wizard.png';
 		image.onload = function () {
-			context.drawImage(this, (width * .9) - this.width, (height * .95) - this.height);
+			const wizardHeight = height * 0.2;
+      const aspectRatio = this.width / this.height;
+			const wizardWidth = wizardHeight * aspectRatio;
+      const x = (width * 0.91) - wizardWidth;
+			const y = (height * 0.95) - wizardHeight;
+      context.drawImage(this, x , y, wizardWidth, wizardHeight);
 		};
 	};
 
