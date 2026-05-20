@@ -76,6 +76,25 @@
 
         canvas.addEventListener('mousedown', () => mouseClicked = true);
         canvas.addEventListener('mouseup', () => mouseClicked = false);
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            if (e.touches.length > 0) {
+                 positions.mouseX = e.touches[0].pageX;
+                 positions.mouseY = e.touches[0].pageY;
+            }
+        }, { passive: false });
+        canvas.addEventListener('touchstart', e => {
+             e.preventDefault();
+             if (e.touches.length > 0) {
+                 positions.mouseX = e.touches[0].pageX;
+                 positions.mouseY = e.touches[0].pageY;
+             }
+             mouseClicked = true;
+         }, { passive: false });
+
+         canvas.addEventListener('touchend', e => {
+             mouseClicked = false;
+         })
     };
 
     const loop = () => {
